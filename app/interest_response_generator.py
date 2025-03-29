@@ -1,5 +1,6 @@
 import requests
 import logging
+from app.config import AI_MODEL, AI_URL
 
 # ログ設定（必要に応じてレベルを DEBUG に変更可能）
 logging.basicConfig(
@@ -12,10 +13,15 @@ class InterestResponseGenerator:
     ユーザーの発言に対して、興味・関心・知識・スキルに関連した会話を盛り上げる返答を生成するクラス。
     """
 
-    def __init__(self, model: str = "schroneko/llama-3.1-swallow-8b-instruct-v0.1:latest" , base_url: str = "http://host.docker.internal:11434"):
+    def __init__(self, model: str = AI_MODEL, base_url: str = AI_URL):
         self.model = model
         self.api_url = f"{base_url}/api/generate"
         logging.info(f"InterestResponseGenerator initialized with model: {model} and endpoint: {self.api_url}")
+
+#    def __init__(self, model: str = "{AI_MODEL}" , base_url: str = "{AI_URL}"):
+#        self.model = model
+#        self.api_url = f"{base_url}/api/generate"
+#        logging.info(f"InterestResponseGenerator initialized with model: {model} and endpoint: {self.api_url}")
 
     def _build_prompt(self, user_input: str) -> str:
         """
