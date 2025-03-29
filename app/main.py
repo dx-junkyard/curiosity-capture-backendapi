@@ -39,21 +39,9 @@ async def webhook(request: Request) -> str:
                 msg_cate=101,
                 msg_type=1
             )
-            # ユーザーのメッセージをバックエンドAPIに転送
-            #backend_response = requests.post(
-            #    BACKEND_API_URL,
-            #    json={"message": message_text}
-            #)
 
-            # バックエンドからのレスポンス処理
-            #if backend_response.status_code == 200:
-            #    data = backend_response.json()
-            #    # バックエンドが{'reply': '処理結果メッセージ'}のようなJSONを返すと仮定
-            #    push_text = data.get("reply", "処理結果が取得できませんでした")
-            #else:
-            #    push_text = "バックエンドの処理に失敗しました"
+            # AIによる返しを生成
             push_text = generator.generate_response(message_text)
-            #push_text = "バックエンド処理実行"
             
             # LINEのプッシュメッセージAPIでユーザーに返信
             push_payload = {
