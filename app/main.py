@@ -40,8 +40,17 @@ async def webhook(request: Request) -> str:
                 msg_type=1
             )
 
+            # 全体要約を作成
+            #all_summary = repo.get_latest_messages(limit=100)
+            my_text = repo.get_latest_my_messages_joined(user_id=user_id, limit=100, format="raw")
+            my_summary = generator.summarize_messages(my_text)
+            joined_other_text = repo.get_latest_messages_joined(user_id=user_id, limit=100, format="raw")
+            other_summary = generator.summarize_messages(joined_other_text)
+            logger.info(f"[My要約] summary='{my_summary}'")
+            logger.info(f"[全体要約] summary='{other_summary}'")
+
             # AIによる返しを生成
-            push_text = generator.generate_response(message_text)
+            push_text = generator.generate_response(message_text, my_summary, other_summary)
             
             # LINEのプッシュメッセージAPIでユーザーに返信
             push_payload = {
